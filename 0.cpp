@@ -21,7 +21,7 @@ int deposit(int blnc)
 {
     int new_balance;
     int more_money;
-    if (flag == true)
+    if (flag)
     {
         cout << "\nERROR! Enter the valid number!\n";
     }
@@ -162,7 +162,7 @@ int changeBalance(int bet, int win)
 
 int main()
 {
-    if (welcomeToCasino == true)
+    if (welcomeToCasino)
     {
         SetConsoleTextAttribute(hConsole, 11);
         Sleep(300);
