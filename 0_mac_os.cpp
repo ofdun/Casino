@@ -5,6 +5,8 @@
 #include <vector>
 #include <time.h>
 #include <unistd.h>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
@@ -83,7 +85,7 @@ int selectNumberOfLines(int balance)
 
 int selectBetToEachLine(int lines, int balance)
 {
-    cout << "\nHow much would You like to bet on each line? (Your current balance is $" + to_string(balance) + ") $";
+    cout << "\nHow much would You like to bet per line? (Your current balance is $" + to_string(balance) + ") $";
     int bet = 0;
     cin >> bet;
     if (bet * lines > balance)
@@ -114,17 +116,18 @@ string getChars()
     letters.resize(4);
 
     int index = 0;
-    for (int j = 65; j < 69; j++)
+    for (int j = 65; j <= 68; j++)
     {
         char c = j;
         letters[index] = c;
         index++;
     }
-
-    for (int i = 0; i < 3; i++)
+    cout << "\t\t";
+    for (int i = 0; i < 3; ++i)
     {
         int randomNumber = getRandomLetter();
-        usleep(500);
+        cout << letters[randomNumber];
+        this_thread::sleep_for(chrono::milliseconds(800));
         line = line + letters[randomNumber];
     }
 
@@ -136,12 +139,12 @@ int throwRow(int lines, int bet)
     string line = getChars();
     if (line[0] == line[1] and line[1] == line[2])
     {
-        cout << "\t\t" + line + "\tWIN - $" + to_string(bet * 3) << endl;
+        cout << "\tWIN - $" + to_string(bet * 3) << endl;
         return 1;
     }
     else
     {
-        cout << "\t\t" + line + "\tLOST - $" + to_string(bet) << endl;
+        cout << "\tLOST - $" + to_string(bet) << endl;
         return 0;
     }
 }
@@ -158,7 +161,7 @@ int main()
 {
     if (welcomeToCasino)
     {
-        usleep(300);
+        this_thread::sleep_for(chrono::milliseconds(300));
         cout << "\nWelcome to my own Casino! ( originally designed by ofdun )\n";
         welcomeToCasino = false;
     }
@@ -182,47 +185,31 @@ int main()
         {
             int win;
             cout << "\n\t\tROWS:" << endl;
-            if (lines == 1)
+            for (int i = 0; i < lines; ++i)
             {
                 win = throwRow(lines, bet);
                 changeBalance(bet, win);
             }
-            if (lines == 2)
-            {
-                for (int i = 1; i < 3; i++)
-                {
-                    win = throwRow(lines, bet);
-                    changeBalance(bet, win);
-                }
-            }
-            if (lines == 3)
-            {
-                for (int i = 1; i < 4; i++)
-                {
-                    win = throwRow(lines, bet);
-                    changeBalance(bet, win);
-                }
-            }
         }
-        cout << "\nYour balance is $" + to_string(balance) << endl;
-        cout << "\nPress Q if You want to quit Kwazino" << endl;
-        cin >> ending;
-        if (ending == "q" or ending == "Q")
-        {
-            return 0;
-        }
-        cout << "\nDo you want to deposite more money? (Y/N) " << endl;
-        string response;
-        cin >> response;
-        if (response == "Y" or response == "y")
-        {
-            flag = false;
-            balance = deposit(balance);
-            return main();
-        }
-        else
-        {
-            return main();
-        }
+    }
+    cout << "\nYour balance is $" + to_string(balance) << endl;
+    cout << "\nPress Q if You want to quit Kwazino" << endl;
+    cin >> ending;
+    if (ending == "q" or ending == "Q")
+    {
+        return 0;
+    }
+    cout << "\nDo you want to deposite more money? (Y/N) " << endl;
+    string response;
+    cin >> response;
+    if (response == "Y" or response == "y")
+    {
+        flag = false;
+        balance = deposit(balance);
+        return main();
+    }
+    else
+    {
+        return main();
     }
 }
