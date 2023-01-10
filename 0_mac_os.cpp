@@ -4,7 +4,6 @@
 #include <random>
 #include <vector>
 #include <time.h>
-// #include <windows.h>
 #include <unistd.h>
 
 using namespace std;
@@ -16,7 +15,6 @@ const int MAX_LINES = 3;
 int balance = 0;
 string ending;
 bool welcomeToCasino = true;
-// HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int deposit(int blnc)
 {
@@ -123,9 +121,6 @@ string getChars()
         index++;
     }
 
-    // vector<string> randomRow;
-    // randomRow.resize(3);
-
     for (int i = 0; i < 3; i++)
     {
         int randomNumber = getRandomLetter();
@@ -141,13 +136,11 @@ int throwRow(int lines, int bet)
     string line = getChars();
     if (line[0] == line[1] and line[1] == line[2])
     {
-        // SetConsoleTextAttribute(hConsole, 10);
         cout << "\t\t" + line + "\tWIN - $" + to_string(bet * 3) << endl;
         return 1;
     }
     else
     {
-        // SetConsoleTextAttribute(hConsole, 12);
         cout << "\t\t" + line + "\tLOST - $" + to_string(bet) << endl;
         return 0;
     }
@@ -165,11 +158,9 @@ int main()
 {
     if (welcomeToCasino)
     {
-        // SetConsoleTextAttribute(hConsole, 11);
         usleep(300);
         cout << "\nWelcome to my own Casino! ( originally designed by ofdun )\n";
         welcomeToCasino = false;
-        // SetConsoleTextAttribute(hConsole, 7);
     }
     while (true)
     {
@@ -212,9 +203,7 @@ int main()
                     changeBalance(bet, win);
                 }
             }
-            // SetConsoleTextAttribute(hConsole, 0);
         }
-        // SetConsoleTextAttribute(hConsole, 7);
         cout << "\nYour balance is $" + to_string(balance) << endl;
         cout << "\nPress Q if You want to quit Kwazino" << endl;
         cin >> ending;
